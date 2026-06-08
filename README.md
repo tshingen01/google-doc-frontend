@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# Google Doc Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based document editor frontend built with Create React App, Tailwind CSS, React Router, Tiptap, and Axios.
 
-## Available Scripts
+## Project Overview
 
-In the project directory, you can run:
+This frontend provides an authenticated document editing experience similar to a lightweight Google Docs interface. Users can log in, view and manage their documents, edit content, upload files, share documents, and save changes automatically.
 
-### `npm start`
+## Folder Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- `public/`
+  - `index.html` — application shell and root markup
+  - `manifest.json` — PWA metadata
+  - `robots.txt` — crawler directives
+- `src/`
+  - `index.js` — React entry point
+  - `App.js` — top-level route and layout setup
+  - `App.css` / `index.css` — global styles
+  - `reportWebVitals.js` — performance metrics helper
+  - `setupTests.js` — test environment setup
+  - `api/`
+    - `axios.js` — shared Axios instance and API helpers
+  - `components/`
+    - `DeleteButton.jsx` — reusable delete action button
+    - `EditorToolbar.jsx` — rich text editor toolbar controls
+    - `Layout.jsx` — application page shell and navigation wrapper
+    - `NewDocumentButton.jsx` — create new document button
+    - `PrivateRoute.jsx` — route guard for authenticated views
+    - `ShareModal.jsx` — document sharing modal dialog
+    - `UploadButton.jsx` — file upload button component
+  - `context/`
+    - `AuthContext.jsx` — authentication and session state provider
+  - `hooks/`
+    - `useDocuments.js` — document list and editor state management
+  - `pages/`
+    - `DashboardPage.jsx` — document dashboard and list view
+    - `EditorPage.jsx` — rich text editor and document editor page
+    - `LoginPage.jsx` — user authentication page
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Key Features
 
-### `npm test`
+- Authentication via `AuthContext`
+- Protected routes using `PrivateRoute`
+- Document listing, creation, editing, and deletion
+- Rich text editing powered by Tiptap extensions
+- Share modal for document collaboration actions
+- File uploads through reusable upload button component
+- Axios-based API requests configured in `src/api/axios.js`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Development Workflow
 
-### `npm run build`
+### Install dependencies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Start development server
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+Open `http://localhost:3000` to view the app. The app reloads automatically when files change.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Run tests
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm test
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Build production bundle
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm run build
+```
 
-## Learn More
+### Common workflow
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Update or add UI in `src/components/` and `src/pages/`
+2. Add shared logic in `src/hooks/` or `src/context/`
+3. Use `src/api/axios.js` for backend API calls
+4. Run `npm start` and verify behavior in the browser
+5. Build with `npm run build` before deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How the app works
 
-### Code Splitting
+1. User visits `LoginPage` and authenticates.
+2. After login, the app redirects to `DashboardPage`.
+3. The dashboard shows documents and lets users create, open, delete, or share them.
+4. Opening a document navigates to `EditorPage`, where rich text editing is available.
+5. Changes can be saved, shared, or uploaded from editor controls.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Notes
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- This app uses Tailwind CSS for styling.
+- The editor uses `@tiptap/react` and editor extensions for formatting controls.
+- React Router v6 handles app navigation.
+- The frontend expects a backend API for authentication, document persistence, sharing, and uploads.
