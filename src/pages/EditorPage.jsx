@@ -103,7 +103,7 @@ export default function EditorPage() {
 
   if (!document) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex h-full items-center justify-center bg-[#e8eaed]">
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" />
           <p className="text-sm text-ink-muted">Loading document…</p>
@@ -113,8 +113,8 @@ export default function EditorPage() {
   }
 
   return (
-    <div className="flex min-h-full flex-col bg-[#e8eaed]">
-      <header className="sticky top-0 z-10 border-b border-gray-200 bg-white shadow-toolbar">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#e8eaed]">
+      <header className="shrink-0 border-b border-gray-200 bg-white shadow-toolbar">
         <div className="flex items-center gap-4 px-4 py-3 md:px-6">
           <Link
             to="/dashboard"
@@ -136,23 +136,20 @@ export default function EditorPage() {
             <button onClick={saveDocument} className="btn-secondary hidden sm:inline-flex">
               Save
             </button>
+            <ShareModal documentId={id} />
           </div>
         </div>
 
         <EditorToolbar editor={editor} />
       </header>
 
-      <div className="flex-1 overflow-auto px-4 py-8 md:px-8">
-        <div className="mx-auto max-w-[816px]">
-          <div className="doc-paper overflow-hidden">
-            <EditorContent editor={editor} />
+      <div className="editor-scroll">
+        <div className="editor-scroll-inner">
+          <div className="doc-paper">
+            <EditorContent editor={editor} className="h-full min-h-full" />
           </div>
         </div>
       </div>
-
-      <footer className="border-t border-gray-200 bg-white px-4 py-4 md:px-6">
-        <ShareModal documentId={id} />
-      </footer>
     </div>
   );
 }

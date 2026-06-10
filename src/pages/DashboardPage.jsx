@@ -3,6 +3,7 @@ import {
   DocumentTextIcon,
   UsersIcon,
   ClockIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 import useDocuments from '../hooks/useDocuments';
 import UploadButton from '../components/UploadButton';
@@ -18,7 +19,13 @@ function formatDate(dateString) {
   });
 }
 
-function DocumentCard({ doc, onOpen, actions }) {
+function getOwnerName(owner) {
+  if (!owner) return 'Unknown';
+  if (typeof owner === 'object') return owner.name || owner.email || 'Unknown';
+  return 'Unknown';
+}
+
+function DocumentCard({ doc, onOpen, actions, showOwner = false }) {
   return (
     <div
       onClick={onOpen}
@@ -32,8 +39,14 @@ function DocumentCard({ doc, onOpen, actions }) {
           <h3 className="truncate font-medium text-ink group-hover:text-brand-600">
             {doc.title}
           </h3>
+          {showOwner && (
+            <p className="mt-1 flex items-center gap-1 text-xs text-ink-muted">
+              <UserIcon className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Owned by {getOwnerName(doc.owner)}</span>
+            </p>
+          )}
           <p className="mt-1 flex items-center gap-1 text-xs text-ink-muted">
-            <ClockIcon className="h-3.5 w-3.5" />
+            <ClockIcon className="h-3.5 w-3.5 shrink-0" />
             Updated {formatDate(doc.updatedAt)}
           </p>
         </div>
@@ -58,7 +71,8 @@ export default function DashboardPage() {
   const { documents, refreshDocuments } = useDocuments();
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8 md:px-10">
+    <div className="h-full overflow-y-auto">
+      <div className="mx-auto max-w-6xl px-6 py-8 md:px-10">
       <header className="page-header">
         <h1 className="page-title">Welcome back</h1>
         <p className="page-subtitle">Create a new document or pick up where you left off.</p>
@@ -119,12 +133,14 @@ export default function DashboardPage() {
               <DocumentCard
                 key={doc._id}
                 doc={doc}
+                showOwner
                 onOpen={() => navigate(`/documents/${doc._id}`)}
               />
             ))}
           </div>
         )}
       </section>
+      </div>
     </div>
   );
 }

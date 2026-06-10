@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import API from '../api/axios';
 
@@ -30,16 +31,19 @@ export default function ShareModal({ documentId }) {
   };
 
   return (
-    <div className="mx-auto max-w-[816px]">
-      <div className="card p-4">
-        <div className="mb-3 flex items-center gap-2">
-          <ShareIcon className="h-5 w-5 text-brand-500" />
-          <h3 className="text-sm font-medium text-ink">Share document</h3>
-        </div>
+    <Popover className="relative">
+      <PopoverButton className="btn-primary shrink-0">
+        <ShareIcon className="h-4 w-4" />
+        Share
+      </PopoverButton>
 
-        <form onSubmit={shareDocument} className="flex flex-col gap-3 sm:flex-row sm:items-end">
-          <div className="flex-1">
-            <label htmlFor="share-email" className="mb-1.5 block text-xs font-medium text-ink-muted">
+      <PopoverPanel className="absolute right-0 z-20 mt-2 w-80 rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
+        <h3 className="text-sm font-medium text-ink">Share document</h3>
+        <p className="mt-0.5 text-xs text-ink-muted">Invite someone by email</p>
+
+        <form onSubmit={shareDocument} className="mt-4 space-y-3">
+          <div>
+            <label htmlFor="share-email" className="mb-1 block text-xs font-medium text-ink-muted">
               Email address
             </label>
             <input
@@ -48,36 +52,36 @@ export default function ShareModal({ documentId }) {
               placeholder="colleague@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input"
+              className="input py-2"
             />
           </div>
 
-          <div className="sm:w-36">
-            <label htmlFor="share-permission" className="mb-1.5 block text-xs font-medium text-ink-muted">
+          <div>
+            <label htmlFor="share-permission" className="mb-1 block text-xs font-medium text-ink-muted">
               Permission
             </label>
             <select
               id="share-permission"
               value={permission}
               onChange={(e) => setPermission(e.target.value)}
-              className="input"
+              className="input py-2"
             >
               <option value="read">Can view</option>
               <option value="edit">Can edit</option>
             </select>
           </div>
 
-          <button type="submit" disabled={loading} className="btn-primary shrink-0">
+          <button type="submit" disabled={loading} className="btn-primary w-full">
             {loading ? 'Sharing…' : 'Share'}
           </button>
         </form>
 
         {message && (
-          <p className={`mt-3 text-sm ${error ? 'text-red-600' : 'text-green-600'}`}>
+          <p className={`mt-3 text-xs ${error ? 'text-red-600' : 'text-green-600'}`}>
             {message}
           </p>
         )}
-      </div>
-    </div>
+      </PopoverPanel>
+    </Popover>
   );
 }

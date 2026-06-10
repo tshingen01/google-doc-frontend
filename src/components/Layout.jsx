@@ -14,7 +14,7 @@ export default function Layout() {
   const initial = user?.name?.charAt(0)?.toUpperCase() || 'U';
 
   return (
-    <div className="flex min-h-screen bg-surface-canvas">
+    <div className="flex h-screen overflow-hidden bg-surface-canvas">
       <aside className="flex w-64 shrink-0 flex-col border-r border-gray-200 bg-white">
         <div className="flex items-center gap-3 border-b border-gray-100 px-5 py-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 text-white shadow-sm">
@@ -59,7 +59,7 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto">
+      <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <Outlet />
       </main>
     </div>
