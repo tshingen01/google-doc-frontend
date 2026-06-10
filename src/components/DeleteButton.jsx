@@ -1,12 +1,14 @@
+import { TrashIcon } from '@heroicons/react/24/outline';
 import API from '../api/axios';
 
 export default function DeleteButton({ docId, refresh }) {
   return (
     <button
+      type="button"
       onClick={async (e) => {
         e.stopPropagation();
 
-        if (!window.confirm('Delete document?')) {
+        if (!window.confirm('Delete this document?')) {
           return;
         }
 
@@ -17,9 +19,10 @@ export default function DeleteButton({ docId, refresh }) {
           alert(err.response?.data?.message || 'Failed to delete document');
         }
       }}
-      className="text-red-600 hover:text-red-800 px-2"
+      className="rounded-lg p-2 text-ink-faint opacity-0 transition hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+      title="Delete document"
     >
-      Delete
+      <TrashIcon className="h-4 w-4" />
     </button>
   );
 }
