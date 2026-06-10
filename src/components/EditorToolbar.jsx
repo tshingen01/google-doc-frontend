@@ -1,59 +1,89 @@
-import { useEditor } from '@tiptap/react';
-import {
-  Bold,
-  Italic,
-  Underline,
-  BulletList,
-  OrderedList,
-  Heading
-} from '@heroicons/react/24/solid';
+import { useEditorState } from '@tiptap/react';
+
+function ToolbarButton({ active, onClick, children }) {
+  return (
+    <button
+      type="button"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      className={`px-2 py-1 border rounded ${active ? 'bg-gray-300' : 'bg-white hover:bg-gray-50'}`}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function EditorToolbar({ editor }) {
-  if (!editor) return null;
+  const state = useEditorState({
+    editor,
+    selector: ({ editor: ed }) => {
+      if (!ed) {
+        return {
+          isBold: false,
+          isItalic: false,
+          isUnderline: false,
+          isH1: false,
+          isBulletList: false,
+          isOrderedList: false,
+        };
+      }
+
+      return {
+        isBold: ed.isActive('bold'),
+        isItalic: ed.isActive('italic'),
+        isUnderline: ed.isActive('underline'),
+        isH1: ed.isActive('heading', { level: 1 }),
+        isBulletList: ed.isActive('bulletList'),
+        isOrderedList: ed.isActive('orderedList'),
+      };
+    },
+  });
+
+  if (!editor || !state) return null;
 
   return (
     <div className="flex gap-2 mb-2">
-      <button
+      <ToolbarButton
+        active={state.isBold}
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`px-2 py-1 border rounded ${editor.isActive('bold') ? 'bg-gray-300' : ''}`}
       >
-        B
-      </button>
+        <strong>B</strong>
+      </ToolbarButton>
 
-      <button
+      <ToolbarButton
+        active={state.isItalic}
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`px-2 py-1 border rounded ${editor.isActive('italic') ? 'bg-gray-300' : ''}`}
       >
-        I
-      </button>
+        <em>I</em>
+      </ToolbarButton>
 
-      <button
+      <ToolbarButton
+        active={state.isUnderline}
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`px-2 py-1 border rounded ${editor.isActive('underline') ? 'bg-gray-300' : ''}`}
       >
-        U
-      </button>
+        <span className="underline">U</span>
+      </ToolbarButton>
 
-      <button
+      <ToolbarButton
+        active={state.isH1}
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={`px-2 py-1 border rounded ${editor.isActive('heading', { level: 1 }) ? 'bg-gray-300' : ''}`}
       >
         H1
-      </button>
+      </ToolbarButton>
 
-      <button
+      <ToolbarButton
+        active={state.isBulletList}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={`px-2 py-1 border rounded ${editor.isActive('bulletList') ? 'bg-gray-300' : ''}`}
       >
         • List
-      </button>
+      </ToolbarButton>
 
-      <button
+      <ToolbarButton
+        active={state.isOrderedList}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={`px-2 py-1 border rounded ${editor.isActive('orderedList') ? 'bg-gray-300' : ''}`}
       >
         1. List
-      </button>
+      </ToolbarButton>
     </div>
   );
 }

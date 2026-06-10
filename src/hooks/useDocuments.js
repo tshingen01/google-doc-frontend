@@ -8,8 +8,12 @@ export default function useDocuments() {
   });
 
   const loadDocuments = async () => {
-    const res = await API.get("/documents");
-    setDocuments(res.data);
+    try {
+      const res = await API.get("/documents");
+      setDocuments(res.data);
+    } catch (err) {
+      console.error("Failed to load documents:", err);
+    }
   };
 
   useEffect(() => {

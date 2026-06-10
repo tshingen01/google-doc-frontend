@@ -1,27 +1,25 @@
-import { useState } from 'react';
 import API from '../api/axios';
-import { useNavigate } from 'react-router-dom';
 
 export default function DeleteButton({ docId, refresh }) {
-  const [file, setFile] = useState(null);
-
   return (
-    <div className="flex gap-2 mb-4">
-      <button
-        onClick={async (e) => {
-          e.stopPropagation();
+    <button
+      onClick={async (e) => {
+        e.stopPropagation();
 
-          if (!window.confirm("Delete document?")) {
-            return;
-          }
+        if (!window.confirm('Delete document?')) {
+          return;
+        }
 
+        try {
           await API.delete(`/documents/${docId}`);
-
           refresh();
-        }}
-      >
-        Delete
-      </button>
-    </div>
+        } catch (err) {
+          alert(err.response?.data?.message || 'Failed to delete document');
+        }
+      }}
+      className="text-red-600 hover:text-red-800 px-2"
+    >
+      Delete
+    </button>
   );
 }
